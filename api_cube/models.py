@@ -7,7 +7,7 @@ from django.db.models import Model
 
 class SolveTime(models.Model):
     time = models.FloatField()
-    created = models.TimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 

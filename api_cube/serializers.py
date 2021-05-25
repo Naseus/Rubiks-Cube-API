@@ -27,7 +27,7 @@ class AlgorithmSerializer(serializers.ModelSerializer):
         ]
 
 
-class TimeSerializer(serializers.ModelSerializer):
+class SolveTimeSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
 
     class Meta:
