@@ -10,6 +10,9 @@ class SolveTime(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        get_latest_by = 'created'
+
 
 class Algorithm(models.Model):
     slug = models.SlugField(max_length=50, primary_key=True)

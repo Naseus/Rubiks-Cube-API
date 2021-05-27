@@ -1,32 +1,69 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from rest_framework.parsers import JSONParser
+from django.http import HttpResponse
+from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import Algorithm, SolveTime
 from .serializers import AlgorithmSerializer, SolveTimeSerializer
 
 
 # Create your views here.
 
+@api_view(['GET'])
 def algorithm_list(request):
     if request.method == 'GET':
         algorithms = Algorithm.objects.all()
         serializer = AlgorithmSerializer(algorithms, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    if request == 'POST':
-        pass
+        return Response(serializer.data)
 
 
+@api_view(['GET', 'POST'])
 def user_solve_times(request):
     if request.method == 'GET':
         times = SolveTime.objects.filter(owner=request.user)
         serializer = SolveTimeSerializer(times, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
 
     if request.method == 'POST':
-        data = JSONParser.parse(request)
-        serializer = SolveTimeSerializer(data=data)
+        serializer = SolveTimeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserSolveTimes(APIView):
+    def get(self, request):
+        times = SolveTime.objects.filter(owner=request.user)
+        serializer = SolveTimeSerializer(times, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = SolveTimeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AlgorithmList(APIView):
+    def get(self, request, classification):
+        algorithms = Algorithm.objects.filter(classification=classification)
+        serializer = AlgorithmSerializer(algorithms, many=True)
+        return Response(serializer.data)
+
+
+class AlgorithmDetails(APIView):
+    def get_object(self, id):
+        try:
+            return Algorithm.objects.get(slug=id)
+        except Algorithm.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, slug):
+        algorithm = self.get_object(slug)
+        if type(algorithm) == HttpResponse:
+            return algorithm
+        serializer = AlgorithmSerializer(algorithm)
+        return Response(serializer.data)

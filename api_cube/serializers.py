@@ -28,13 +28,11 @@ class AlgorithmSerializer(serializers.ModelSerializer):
 
 
 class SolveTimeSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
 
     class Meta:
         model = SolveTime
         fields = [
             'time',
             'created',
-            'owner',
         ]
 

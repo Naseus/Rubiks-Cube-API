@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import user_solve_times, algorithm_list
+from .views import UserSolveTimes, AlgorithmList, AlgorithmDetails
 
 urlpatterns = [
-    path('time/', user_solve_times),
-    path('all-algorithms/', algorithm_list),
+    path('time/', UserSolveTimes.as_view()),
+    path('algorithms/<classification>', AlgorithmList.as_view()),
+    path('algorithm/<slug>', AlgorithmDetails.as_view()),
 ]
