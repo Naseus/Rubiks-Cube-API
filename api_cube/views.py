@@ -46,6 +46,13 @@ class UserSolveTimes(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, id):
+        solve_time = SolveTime.get(id)
+        if solve_time.owner != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        solve_time.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class AlgorithmList(APIView):
     def get(self, request, classification):
