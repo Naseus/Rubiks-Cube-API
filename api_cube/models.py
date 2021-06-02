@@ -10,6 +10,10 @@ class SolveTime(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        self.time = round(self.time, 2)
+        super(SolveTime, self).save(*args, **kwargs)
+
     class Meta:
         get_latest_by = 'created'
 

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 from .models import Alternative, Algorithm, SolveTime
 
 
@@ -28,11 +29,15 @@ class AlgorithmSerializer(serializers.ModelSerializer):
 
 
 class SolveTimeSerializer(serializers.ModelSerializer):
+    owner = serializers.HiddenField(default=CurrentUserDefault())
+    created = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = SolveTime
         fields = [
+            'id',
             'time',
             'created',
+            'owner',
         ]
 
