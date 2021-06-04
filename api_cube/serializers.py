@@ -1,16 +1,16 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 from .models import Alternative, Algorithm, SolveTime
 
 
 class AlternativeSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
+    owner = serializers.HiddenField(default=CurrentUserDefault())
     base_alg = serializers.PrimaryKeyRelatedField(many=False, queryset=Algorithm.objects.all())
 
     class Meta:
         model = Alternative
         fields = [
+            'id',
             'alternative',
             'owner',
             'base_alg',
