@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # Added Apps
     'rest_framework',
+    'django_extensions',
     'api_cube',
 ]
 

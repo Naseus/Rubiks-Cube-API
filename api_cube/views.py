@@ -43,10 +43,10 @@ class UserSolveTimesView(generics.GenericAPIView, mixins.ListModelMixin, mixins.
 class AlgorithmView(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.ListModelMixin):
     serializer_class = AlgorithmSerializer
     queryset = Algorithm.objects.all()
-    _classifications = [
+    _classifications = (
         'PLL',
         'OLL'
-    ]
+    )
 
     lookup_field = 'slug'
 

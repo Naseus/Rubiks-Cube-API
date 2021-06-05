@@ -25,8 +25,12 @@ class SolveTime(models.Model):
 
 
 class Algorithm(models.Model):
+    classifications = (
+        ('OLL', 'OLL'),
+        ('PLL', 'PLL'),
+    )
     slug = models.SlugField(max_length=50, primary_key=True, validators=[validate_slug])
-    classification = models.CharField(max_length=25)
+    classification = models.CharField(max_length=25, choices=classifications)
     alg_name = models.CharField(max_length=50)
     moves = models.CharField(max_length=100, validators=[algorithm_validator])
 
