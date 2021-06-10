@@ -37,7 +37,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    'django.contrib.auth',
 
     # Added Apps
     'rest_framework',
@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'api_cube',
 ]
 
-SITE_ID = 1
+SITE_ID = 2
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -103,6 +103,23 @@ DATABASES = {
     }
 }
 
+
+# Email settings
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = config['EMAIL']['SERVER']
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = config['EMAIL']['HOST']
+
+EMAIL_HOST_PASSWORD = config['EMAIL']['PASSWORD']
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+
+ACCOUNT_EMAIL_REQUIRED = True
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

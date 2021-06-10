@@ -24,6 +24,7 @@ class UserSolveTimesView(generics.GenericAPIView, mixins.ListModelMixin, mixins.
     def get(self, request, id=None):
         if id and self.validate_user(id, request):
             return self.retrieve(request)
+        self.queryset = self.queryset.filter(owner=request.user)
         return self.list(request)
 
     def post(self, request):
@@ -73,11 +74,13 @@ class AlternativeView(generics.GenericAPIView, mixins.ListModelMixin, mixins.Upd
         return False
 
     def get(self, request, slug=None, id=None):
+        self.queryset = self.queryset.filter(owner=request.user)
         if id and self.validate_user(id, request):
             return self.retrieve(request)
         if slug:
             self.queryset = self.queryset.filter(owner=request.user, base_alg__slug=slug)
             return self.list(request)
+        self.queryset = self.queryset.filter(owner=request.user)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, id=None):
