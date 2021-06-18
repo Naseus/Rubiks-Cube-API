@@ -3,8 +3,16 @@
 *.pyc
 __pycache__/
 local_settings.py
+static/*
 
+# Docker
 .env
+Dockerfile
+
+# Secrets
 db.sqlite3
 secret.ini
 .idea/*
+
+Pipfile
+Pipfile.lock
